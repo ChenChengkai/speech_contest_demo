@@ -67,7 +67,7 @@ void SpeechManager::startSpeech()
     // 1.抽签
     this->speechDraw();
     // 2.比赛
-
+    this->speechContest();
     // 3.显示比赛结果
 
     // 第二轮比赛开始
@@ -104,5 +104,68 @@ void SpeechManager::speechDraw()
         std::cout << std::endl;
     }
     std::cout << "---------------" << std::endl;
+    this->clearWindow();
+}
+
+void SpeechManager::speechContest()
+{
+    std::cout << "第<<" << this->m_Index << ">>轮比赛开始！" << std::endl;
+    // 准备临时map,存放小组程序
+    std::multimap<double, int, std::greater<double>> groupScore;
+    int num = 0;            // 记录人员个数，6人一组
+    std::vector<int> v_Src; // 比赛选手容器
+    if (this->m_Index == 1)
+    {
+        v_Src = v1;
+    }
+    else
+    {
+        v_Src = v2;
+    }
+    // 遍历所有比赛选手
+    for (std::vector<int>::iterator it = v_Src.begin(); it != v_Src.end(); it++)
+    {
+        num++;
+        // 评委打分
+        std::deque<double> d;
+        for (int i = 0; i < 10; i++)
+        {
+            double score = (rand() % 401 + 600) / 10.0f;
+            std::cout << score << " ";
+            d.push_back(score);
+        }
+        std::cout << std::endl;
+        std::sort(d.begin(), d.end(), std::greater<double>());
+        d.pop_back();
+        d.pop_front();
+        double avg = std::accumulate(d.begin(), d.end(), 0.0) / d.size();
+        this->m_Speaker[*it].m_Score[this->m_Index - 1] = avg;
+        // 将打分数据，放到临时小组中
+        groupScore.insert(std::make_pair(avg, *it)); // key is avg score,value is No.
+        // 每组取出前三名
+        if (num % 6 == 0)
+        {
+            std::cout << "第" << num / 6 << "小组成绩如下：" << std::endl;
+            for (std::multimap<double, int, std::greater<double>>::iterator mit = groupScore.begin(); mit != groupScore.end(); mit++)
+            {
+                std::cout << "编号：" << mit->second << " 姓名：" << this->m_Speaker[mit->second].m_Name << " 得分：" << this->m_Speaker[mit->second].m_Score[this->m_Index - 1] << std::endl;
+            }
+            // 取走前三名
+            int count = 0;
+            for (std::multimap<double, int, std::greater<double>>::iterator mit = groupScore.begin(); mit != groupScore.end() && count < 3; mit++, count++)
+            {
+                if (this->m_Index == 1)
+                {
+                    v2.push_back(mit->second);
+                }
+                else
+                {
+                    vVictory.push_back(mit->second);
+                }
+            }
+            groupScore.clear();
+        }
+    }
+    std::cout << "第<<" << this->m_Index << ">>轮比赛结束！" << std::endl;
     this->clearWindow();
 }

@@ -1,9 +1,14 @@
 #pragma once
 #include <iostream>
+
 #include <string>
 #include <vector>
 #include <map>
+#include <deque>
+
 #include <algorithm>
+#include <numeric>
+
 #include "speaker.h"
 
 class SpeechManager
@@ -32,12 +37,13 @@ public:
     void startSpeech();
     // 抽签
     void speechDraw();
+    // 比赛正式开始
+    void speechContest();
     // 析构函数
     ~SpeechManager();
     // 清屏
     void clearWindow()
     {
-        std::cout << "按回车键清屏！";
         system("read a");
         system("clear");
     }
