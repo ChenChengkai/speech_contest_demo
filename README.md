@@ -1,6 +1,7 @@
 - [1.introduction](#1introduction)
 - [2.SpeechManager class](#2speechmanager-class)
 - [3.showMenu](#3showmenu)
+- [4.exitSystem](#4exitsystem)
 
 # 1.introduction
 
@@ -83,3 +84,52 @@ void SpeechManager::showMenu()
 ```
 
 ![Image test](./pic/3.showMenu.01.png)
+
+# 4.exitSystem
+
+&emsp;&emsp;添加退出系统功能！在`speechManager.h`中声明showMenu函数，在`speechManager.cpp`中添加实现。
+
+```cpp
+// 退出系统
+void exitSystem();
+```
+
+```cpp
+void SpeechManager::exitSystem()
+{
+    std::cout << "欢迎下次再使用！" << std::endl;
+    exit(0);
+}
+```
+
+在`main.cpp`中要添加测试，搭建用户界面框架！如下：
+```cpp
+int main()
+{
+    SpeechManager sm;
+    // sm.showMenu();
+    int select = 0;
+    while (true)
+    {
+        sm.showMenu();
+        std::cout << "请选择一项：" << std::endl;
+        std::cin >> select;
+        switch (select)
+        {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 0:
+            sm.exitSystem();
+            break;
+        default:
+            break;
+        }
+    }
+    return 0;
+}
+```
+![Image test](./pic/4.exitSystem.01.png)

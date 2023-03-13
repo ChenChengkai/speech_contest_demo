@@ -21,3 +21,9 @@ void SpeechManager::showMenu()
     std::cout << "**********************" << std::endl;
     std::cout << std::endl;
 }
+
+void SpeechManager::exitSystem()
+{
+    std::cout << "欢迎下次再使用！" << std::endl;
+    exit(0);
+}
