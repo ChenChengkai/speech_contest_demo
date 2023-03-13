@@ -9,6 +9,7 @@
   - [5.3 speechDraw](#53-speechdraw)
   - [5.4 speechContest](#54-speechcontest)
   - [5.5 showScore](#55-showscore)
+  - [5.6 2nd showScore](#56-2nd-showscore)
 
 # 1.introduction
 
@@ -360,3 +361,29 @@ void SpeechManager::showScore()
 }
 ```
 ![Image test](./pic/5.5.showScore.png)
+
+## 5.6 2nd showScore
+
+第二轮比赛很简单，只需要修改m_Index++即可。
+```cpp
+void SpeechManager::startSpeech()
+{
+    // 第一轮比赛开始
+
+    // 1.抽签
+    this->speechDraw();
+    // 2.比赛
+    this->speechContest();
+    // 3.显示比赛结果
+    this->showScore();
+    // 第二轮比赛开始
+    this->m_Index++;
+    // 1.抽签
+    this->speechDraw();
+    // 2.比赛
+    this->speechContest();
+    // 3.显示最终结果
+    this->showScore();
+    // 保存结果
+}
+```

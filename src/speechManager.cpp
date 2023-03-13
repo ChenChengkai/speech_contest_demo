@@ -71,13 +71,13 @@ void SpeechManager::startSpeech()
     // 3.显示比赛结果
     this->showScore();
     // 第二轮比赛开始
-
+    this->m_Index++;
     // 1.抽签
-
+    this->speechDraw();
     // 2.比赛
-
+    this->speechContest();
     // 3.显示最终结果
-
+    this->showScore();
     // 保存结果
 }
 void SpeechManager::speechDraw()
