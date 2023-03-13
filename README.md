@@ -8,6 +8,7 @@
   - [5.3 startSpeech](#53-startspeech)
   - [5.3 speechDraw](#53-speechdraw)
   - [5.4 speechContest](#54-speechcontest)
+  - [5.5 showScore](#55-showscore)
 
 # 1.introduction
 
@@ -332,3 +333,30 @@ void SpeechManager::speechContest()
 ```
 
 ![Image test](./pic/5.4.speechContest.png)
+
+
+## 5.5 showScore
+
+&emsp;&emsp;显示每一轮晋级后的选手的分数。
+```cpp
+void SpeechManager::showScore()
+{
+    std::cout << "第<<" << this->m_Index << ">>轮晋级选手如下：" << std::endl;
+    std::vector<int> v;
+    if (this->m_Index == 1)
+    {
+        v = this->v2;
+    }
+    else
+    {
+        v = this->vVictory;
+    }
+    for (std::vector<int>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        std::cout << "选手编号：" << *it << " 姓名：" << this->m_Speaker[*it].m_Name << " 得分：" << this->m_Speaker[*it].m_Score[this->m_Index - 1] << std::endl;
+    }
+    this->clearWindow();
+    this->showMenu();
+}
+```
+![Image test](./pic/5.5.showScore.png)

@@ -69,7 +69,7 @@ void SpeechManager::startSpeech()
     // 2.比赛
     this->speechContest();
     // 3.显示比赛结果
-
+    this->showScore();
     // 第二轮比赛开始
 
     // 1.抽签
@@ -168,4 +168,24 @@ void SpeechManager::speechContest()
     }
     std::cout << "第<<" << this->m_Index << ">>轮比赛结束！" << std::endl;
     this->clearWindow();
+}
+
+void SpeechManager::showScore()
+{
+    std::cout << "第<<" << this->m_Index << ">>轮晋级选手如下：" << std::endl;
+    std::vector<int> v;
+    if (this->m_Index == 1)
+    {
+        v = this->v2;
+    }
+    else
+    {
+        v = this->vVictory;
+    }
+    for (std::vector<int>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        std::cout << "选手编号：" << *it << " 姓名：" << this->m_Speaker[*it].m_Name << " 得分：" << this->m_Speaker[*it].m_Score[this->m_Index - 1] << std::endl;
+    }
+    this->clearWindow();
+    this->showMenu();
 }

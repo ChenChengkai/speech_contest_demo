@@ -39,6 +39,8 @@ public:
     void speechDraw();
     // 比赛正式开始
     void speechContest();
+    // 显示分数
+    void showScore();
     // 析构函数
     ~SpeechManager();
     // 清屏
