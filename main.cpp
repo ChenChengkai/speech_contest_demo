@@ -3,6 +3,10 @@
 int main()
 {
     SpeechManager sm;
+    for (std::map<int, Speaker>::iterator it = sm.m_Speaker.begin(); it != sm.m_Speaker.end(); it++)
+    {
+        std::cout << "编号：" << it->first << " 姓名：" << it->second.m_Name << " 得分:" << it->second.m_Score[0] << std::endl;
+    }
     // sm.showMenu();
     int select = 0;
     while (true)
@@ -13,6 +17,7 @@ int main()
         switch (select)
         {
         case 1:
+            sm.startSpeech();
             break;
         case 2:
             break;

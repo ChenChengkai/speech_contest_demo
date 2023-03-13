@@ -2,6 +2,11 @@
 - [2.SpeechManager class](#2speechmanager-class)
 - [3.showMenu](#3showmenu)
 - [4.exitSystem](#4exitsystem)
+- [5.speech function](#5speech-function)
+  - [5.1 speacker.h](#51-speackerh)
+  - [5.2 create Speaker](#52-create-speaker)
+  - [5.3 startSpeech](#53-startspeech)
+  - [5.3 speechDraw](#53-speechdraw)
 
 # 1.introduction
 
@@ -133,3 +138,124 @@ int main()
 }
 ```
 ![Image test](./pic/4.exitSystem.01.png)
+
+# 5.speech function
+
+比赛流程分析：
+抽签->开始演讲比赛->显示第一轮比赛结果->抽签->开始演讲比赛->显示前三名结果->保存分数
+
+## 5.1 speacker.h
+
+&emsp;&emsp;创建选手类speacher.h，包含选手姓名和选手分数，分数包含两轮的分数。
+```cpp
+#pragma once
+#include <iostream>
+class Speaker
+{
+public:
+    std::string m_Name; // 姓名
+    double m_Score[2];  // 最多两轮成绩
+};
+```
+
+## 5.2 create Speaker
+
+在`speechManager.h`中添加属性如下：
+```cpp
+/*成员属性*/
+std::vector<int> v1;              // 保存第一轮参赛选手编号
+std::vector<int> v2;              // 第一轮晋级6位选手编号
+std::vector<int> vVictory;        // 保存胜出前三名选手编号
+std::map<int, Speaker> m_Speaker; // 存放编号以及对应选手类的容器
+// 存放比赛容器
+int m_Index;
+```
+
+```cpp
+void SpeechManager::speechManager()
+{
+    std::string nameSeed = "ABCDEFGHIJKL";
+    for (int i = 0; i < nameSeed.size(); i++)
+    {
+        // 创建：姓名、得分、编号！
+        Speaker sp;
+        sp.m_Name = std::string("选手") + nameSeed[i];
+        for (int j = 0; j < 2; j++)
+        {
+            sp.m_Score[j] = 0.0;
+        }
+        this->v1.push_back(i + 10001);
+        this->m_Speaker.insert(std::make_pair(i + 10001, sp));
+    }
+}
+```
+
+添加测试代码如下：
+```cpp
+for (std::map<int, Speaker>::iterator it = sm.m_Speaker.begin(); it != sm.m_Speaker.end(); it++)
+{
+    std::cout << "编号：" << it->first << " 姓名：" << it->second.m_Name << " 得分:" << it->second.m_Score[0] << std::endl;
+}
+```
+![Image test](./pic/5.3.create_Speaker.01.png)
+
+
+
+## 5.3 startSpeech
+
+开始比赛！
+```cpp
+void SpeechManager::startSpeech()
+{
+    // 第一轮比赛开始
+
+    // 1.抽签
+
+    // 2.比赛
+
+    // 3.显示比赛结果
+
+    // 第二轮比赛开始
+
+    // 1.抽签
+
+    // 2.比赛
+
+    // 3.显示最终结果
+
+    // 保存结果
+}
+```
+## 5.3 speechDraw
+
+&emsp;&emsp;抽签主要是对竞赛选手的编号进行乱序，要判断当前是第一轮比赛还是第二轮比赛。
+```cpp
+void SpeechManager::speechDraw()
+{
+    std::cout << "第<<" << this->m_Index << ">>轮比赛选手正在抽签" << std::endl;
+    std::cout << "---------------" << std::endl;
+    std::cout << "抽签后的顺序如下：" << std::endl;
+    if (this->m_Index == 1)
+    {
+        std::random_shuffle(this->v1.begin(), this->v1.end());
+        for (std::vector<int>::iterator it = v1.begin(); it != v1.end(); it++)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
+    }
+    else // 第二轮
+    {
+        std::random_shuffle(this->v2.begin(), this->v2.end());
+        for (std::vector<int>::iterator it = v2.begin(); it != v2.end(); it++)
+        {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "---------------" << std::endl;
+    this->clearWindow();
+}
+```
+
+![Image test](./pic/5.3.speechDraw.png)
