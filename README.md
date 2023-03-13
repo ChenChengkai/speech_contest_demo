@@ -10,6 +10,7 @@
   - [5.4 speechContest](#54-speechcontest)
   - [5.5 showScore](#55-showscore)
   - [5.6 2nd showScore](#56-2nd-showscore)
+  - [5.7 saveRecord](#57-saverecord)
 
 # 1.introduction
 
@@ -385,5 +386,24 @@ void SpeechManager::startSpeech()
     // 3.显示最终结果
     this->showScore();
     // 保存结果
+}
+```
+
+## 5.7 saveRecord
+
+保存为csv格式文件。
+```cpp
+void SpeechManager::saveRecord()
+{
+    std::ofstream ofs;
+    ofs.open("../speech.csv", std::ios::out | std::ios::app);
+    for (std::vector<int>::iterator it = vVictory.begin(); it != vVictory.end(); it++)
+    {
+        ofs << *it << "," << this->m_Speaker[*it].m_Score[1] << ",";
+    }
+    ofs << std::endl;
+    std::cout << "已经保存完了！" << std::endl;
+    this->fileIsEmpty = false;
+    this->clearWindow();
 }
 ```

@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <numeric>
 
+#include <fstream>
+
 #include "speaker.h"
 
 class SpeechManager
@@ -21,6 +23,8 @@ public:
     std::map<int, Speaker> m_Speaker; // 存放编号以及对应选手类的容器
     // 存放比赛容器
     int m_Index;
+    // 文件是否为空标记
+    bool fileIsEmpty;
 
     /*成员函数*/
     // 构造函数
@@ -41,6 +45,8 @@ public:
     void speechContest();
     // 显示分数
     void showScore();
+    // 保存记录的分数
+    void saveRecord();
     // 析构函数
     ~SpeechManager();
     // 清屏

@@ -79,6 +79,7 @@ void SpeechManager::startSpeech()
     // 3.显示最终结果
     this->showScore();
     // 保存结果
+    this->saveRecord();
 }
 void SpeechManager::speechDraw()
 {
@@ -188,4 +189,18 @@ void SpeechManager::showScore()
     }
     this->clearWindow();
     this->showMenu();
+}
+
+void SpeechManager::saveRecord()
+{
+    std::ofstream ofs;
+    ofs.open("../speech.csv", std::ios::out | std::ios::app);
+    for (std::vector<int>::iterator it = vVictory.begin(); it != vVictory.end(); it++)
+    {
+        ofs << *it << "," << this->m_Speaker[*it].m_Score[1] << ",";
+    }
+    ofs << std::endl;
+    std::cout << "已经保存完了！" << std::endl;
+    this->fileIsEmpty = false;
+    this->clearWindow();
 }
