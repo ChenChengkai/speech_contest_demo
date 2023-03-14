@@ -290,3 +290,26 @@ void SpeechManager::showRecord()
     }
     this->clearWindow();
 }
+
+void SpeechManager::clearRecord()
+{
+    std::cout << "确认清空？" << std::endl;
+    int choice = 0;
+    std::cout << "1.确定" << std::endl;
+    std::cout << "2.取消" << std::endl;
+    std::cin >> choice;
+    if (choice == 1)
+    {
+        std::ofstream ofs("../speech.csv", std::ios::trunc);
+        ofs.close();
+        // 重置
+        //  初始化容器和属性
+        this->initSpeech();
+        // 创建12名选手
+        this->speechManager();
+        // 加载往届记录
+        // this->loadRecord();
+        std::cout << "清空成功！" << std::endl;
+    }
+    this->clearWindow();
+}
