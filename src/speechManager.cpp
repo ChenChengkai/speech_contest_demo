@@ -7,6 +7,8 @@ SpeechManager::SpeechManager()
     this->initSpeech();
     // 创建选手
     this->speechManager();
+    // 加载往届数据
+    this->loadRecord();
 }
 
 // 析构函数
@@ -41,6 +43,8 @@ void SpeechManager::initSpeech()
     this->m_Speaker.clear();
     // 初始化比赛轮数
     this->m_Index = 1;
+
+    this->m_Record.clear();
 }
 
 void SpeechManager::speechManager()
@@ -80,6 +84,14 @@ void SpeechManager::startSpeech()
     this->showScore();
     // 保存结果
     this->saveRecord();
+
+    // 重置
+    //  初始化容器和属性
+    this->initSpeech();
+    // 创建12名选手
+    this->speechManager();
+    // 加载往届记录
+    this->loadRecord();
 }
 void SpeechManager::speechDraw()
 {
@@ -202,5 +214,79 @@ void SpeechManager::saveRecord()
     ofs << std::endl;
     std::cout << "已经保存完了！" << std::endl;
     this->fileIsEmpty = false;
+    this->clearWindow();
+}
+
+void SpeechManager::loadRecord()
+{
+    std::ifstream ifs("../speech.csv", std::ios::in);
+    if (!ifs.is_open())
+    {
+        this->fileIsEmpty = true;
+        std::cout << "文件不存在！" << std::endl;
+        ifs.close();
+        return;
+    }
+
+    // 文件为空的情况
+    char ch;
+    ifs >> ch;
+    if (ifs.eof())
+    {
+        std::cout << "文件为空！" << std::endl;
+        this->fileIsEmpty = true;
+        ifs.close();
+        return;
+    }
+    // 文件不为空
+    this->fileIsEmpty = false;
+    ifs.putback(ch);
+    std::string data;
+    int index = 0;
+    while (ifs >> data)
+    {
+        std::vector<std::string> v; // 保存6个string
+        int pos = -1;
+        int start = 0;
+        while (true)
+        {
+            pos = data.find(",", start);
+            if (pos == -1)
+            {
+                break;
+            }
+            std::string temp = data.substr(start, pos - start);
+            start = pos + 1;
+            v.push_back(temp);
+        }
+        this->m_Record.insert(std::make_pair(index, v));
+        index++;
+    }
+    ifs.close();
+
+    // for (std::map<int, std::vector<std::string>>::iterator it = m_Record.begin(); it != this->m_Record.end(); it++)
+    // {
+    //     std::cout << it->first << "冠军编号：" << it->second[0] << " 得分：" << it->second[1] << std::endl;
+    //     // std::cout << it->first << "亚军编号：" << it->second[2] << " 得分：" << it->second[3] << std::endl;
+    //     // std::cout << it->first << "季军编号：" << it->second[4] << " 得分：" << it->second[5] << std::endl;
+    // }
+}
+
+void SpeechManager::showRecord()
+{
+    if (this->fileIsEmpty == true)
+    {
+        std::cout << "文件不存在或者文件为空！" << std::endl;
+    }
+    else
+    {
+        for (int i = 0; i < this->m_Record.size(); i++)
+        {
+            std::cout << "第" << i + 1 << "届 "
+                      << "冠军编号：" << this->m_Record[i][0] << " 得分：" << this->m_Record[i][1] << " "
+                      << "亚军编号：" << this->m_Record[i][2] << " 得分：" << this->m_Record[i][3] << " "
+                      << "季军编号：" << this->m_Record[i][4] << " 得分：" << this->m_Record[i][5] << std::endl;
+        }
+    }
     this->clearWindow();
 }

@@ -25,6 +25,8 @@ public:
     int m_Index;
     // 文件是否为空标记
     bool fileIsEmpty;
+    // 存放往届记录
+    std::map<int, std::vector<std::string>> m_Record;
 
     /*成员函数*/
     // 构造函数
@@ -47,6 +49,10 @@ public:
     void showScore();
     // 保存记录的分数
     void saveRecord();
+    // 加载数据
+    void loadRecord();
+    // 显示记录的数据
+    void showRecord();
     // 析构函数
     ~SpeechManager();
     // 清屏

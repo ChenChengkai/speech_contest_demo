@@ -20,6 +20,7 @@ int main()
             sm.startSpeech();
             break;
         case 2:
+            sm.showRecord();
             break;
         case 3:
             break;

@@ -11,6 +11,9 @@
   - [5.5 showScore](#55-showscore)
   - [5.6 2nd showScore](#56-2nd-showscore)
   - [5.7 saveRecord](#57-saverecord)
+- [6.loadRecord](#6loadrecord)
+  - [6.1 load data](#61-load-data)
+  - [6.2 show record data](#62-show-record-data)
 
 # 1.introduction
 
@@ -407,3 +410,91 @@ void SpeechManager::saveRecord()
     this->clearWindow();
 }
 ```
+
+# 6.loadRecord
+## 6.1 load data
+
+&emsp;&emsp;加载csv文件中的数据。
+
+```cpp
+void SpeechManager::loadRecord()
+{
+    std::ifstream ifs("../speech.csv", std::ios::in);
+    if (!ifs.is_open())
+    {
+        this->fileIsEmpty = true;
+        std::cout << "文件不存在！" << std::endl;
+        ifs.close();
+        return;
+    }
+
+    // 文件为空的情况
+    char ch;
+    ifs >> ch;
+    if (ifs.eof())
+    {
+        std::cout << "文件为空！" << std::endl;
+        this->fileIsEmpty = true;
+        ifs.close();
+        return;
+    }
+    // 文件不为空
+    this->fileIsEmpty = false;
+    ifs.putback(ch);
+    std::string data;
+    int index = 0;
+    while (ifs >> data)
+    {
+        std::vector<std::string> v; // 保存6个string
+        int pos = -1;
+        int start = 0;
+        while (true)
+        {
+            pos = data.find(",", start);
+            if (pos == -1)
+            {
+                break;
+            }
+            std::string temp = data.substr(start, pos - start);
+            start = pos + 1;
+            v.push_back(temp);
+        }
+        this->m_Record.insert(std::make_pair(index, v));
+        index++;
+    }
+    ifs.close();
+
+    // for (std::map<int, std::vector<std::string>>::iterator it = m_Record.begin(); it != this->m_Record.end(); it++)
+    // {
+    //     std::cout << it->first << "冠军编号：" << it->second[0] << " 得分：" << it->second[1] << std::endl;
+    //     // std::cout << it->first << "亚军编号：" << it->second[2] << " 得分：" << it->second[3] << std::endl;
+    //     // std::cout << it->first << "季军编号：" << it->second[4] << " 得分：" << it->second[5] << std::endl;
+    // }
+}
+```
+
+
+## 6.2 show record data
+
+```cpp
+void SpeechManager::showRecord()
+{
+    if (this->fileIsEmpty == true)
+    {
+        std::cout << "文件不存在或者文件为空！" << std::endl;
+    }
+    else
+    {
+        for (int i = 0; i < this->m_Record.size(); i++)
+        {
+            std::cout << "第" << i + 1 << "届 "
+                      << "冠军编号：" << this->m_Record[i][0] << " 得分：" << this->m_Record[i][1] << " "
+                      << "亚军编号：" << this->m_Record[i][2] << " 得分：" << this->m_Record[i][3] << " "
+                      << "季军编号：" << this->m_Record[i][4] << " 得分：" << this->m_Record[i][5] << std::endl;
+        }
+    }
+    this->clearWindow();
+}
+```
+
+![Image test](./pic/6.2.showRecord.png)
